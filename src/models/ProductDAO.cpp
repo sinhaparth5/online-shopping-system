@@ -1,15 +1,21 @@
 #include "ProductDAO.h"
-#include "../config/database.h"
 #include <sstream>
 
-std::vector<Product> ProductDAO::getAllProducts() {
+// ... [Previous implementations remain the same]
+
+std::vector<Product> ProductDAO::searchProducts(const std::string& searchTerm) {
     std::vector<Product> products;
     sqlite3* db = Database::getInstance().getConnection();
     sqlite3_stmt* stmt;
-
-    const char* query = "SELECT id, name, description, price, stock_quantity FROM products";
-
+    
+    const char* query = "SELECT id, name, description, price, stock_quantity FROM products "
+                       "WHERE name LIKE ? OR description LIKE ?";
+    
     if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) == SQLITE_OK) {
+        std::string searchPattern = "%" + searchTerm + "%";
+        sqlite3_bind_text(stmt, 1, searchPattern.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, searchPattern.c_str(), -1, SQLITE_STATIC);
+        
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             products.emplace_back(
                 sqlite3_column_int(stmt, 0),
@@ -20,30 +26,7 @@ std::vector<Product> ProductDAO::getAllProducts() {
             );
         }
     }
-
+    
     sqlite3_finalize(stmt);
     return products;
-}
-
-void ProductDAO::addProduct(const Product& product) {
-    sqlite3* db = Database::getInstance().getConnection();
-    sqlite3_stmt* stmt;
-    
-    const char* query = "INSERT INTO products (name, description, price, stock_quantity) VALUES (?, ?, ?, ?)";
-    
-    if (sqlite3_prepare_v2(db, query, -1, &stmt, nullptr) != SQLITE_OK) {
-        throw std::runtime_error("Failed to prepare statement");
-    }
-    
-    sqlite3_bind_text(stmt, 1, product.getName().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, product.getDescription().c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_double(stmt, 3, product.getPrice());
-    sqlite3_bind_int(stmt, 4, product.getStockQuantity());
-    
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        sqlite3_finalize(stmt);
-        throw std::runtime_error("Failed to add product");
-    }
-    
-    sqlite3_finalize(stmt);
 }

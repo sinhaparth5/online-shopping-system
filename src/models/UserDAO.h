@@ -1,5 +1,6 @@
 #pragma once
 #include "User.h"
+#include "../utils/PasswordHasher.h"
 #include <optional>
 #include <vector>
 

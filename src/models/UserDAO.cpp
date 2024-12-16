@@ -1,6 +1,5 @@
 #include "UserDAO.h"
 #include "../config/database.h"
-#include "../utils/PasswordHasher.h"
 #include <sstream>
 
 std::optional<User> UserDAO::getUserByUsername(const std::string& username) {

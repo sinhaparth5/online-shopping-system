@@ -18,6 +18,7 @@ public:
     // Getters
     int getId() const { return id; }
     std::string getUsername() const { return username; }
+    std::string getPasswordHash() const { return passwordHash; }  // Added getter for passwordHash
     std::string getEmail() const { return email; }
     std::string getAddress() const { return address; }
     bool getIsAdmin() const { return isAdmin; }

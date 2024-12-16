@@ -2,25 +2,25 @@
 #include <string>
 
 class Product {
-    private:
+private:
     int id;
     std::string name;
-    std::string decription;
+    std::string description;
     double price;
     int stockQuantity;
 
-    public:
-    Product(int id, std::string name, std::string decription, double price, int stockQuantity);
-
+public:
+    Product(int id, std::string name, std::string description, double price, int stockQuantity);
+    
     // Getters
     int getId() const { return id; }
     std::string getName() const { return name; }
-    std::string getDecription() const { return decription; }
+    std::string getDescription() const { return description; }
     double getPrice() const { return price; }
     int getStockQuantity() const { return stockQuantity; }
-
-    //Setters
+    
+    // Setters
     void setPrice(double newPrice);
-    void setStockQuantity(int newStockQuantity);
+    void updateStock(int quantity);
     bool isAvailable() const;
 };

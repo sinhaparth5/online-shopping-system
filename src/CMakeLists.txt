@@ -32,6 +32,8 @@ target_include_directories(shop_lib
 target_link_libraries(shop_lib
     PUBLIC
     PkgConfig::SQLite3
+    OpenSSL::SSL
+    OpenSSL::Crypto
 )
 
 # Create executable target
