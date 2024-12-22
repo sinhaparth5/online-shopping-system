@@ -1,30 +1,38 @@
 #include <gtest/gtest.h>
-#include "../src/config/database.h"
+#include "../src/controllers/ProductController.h"
+#include "../src/utils/DatabaseInitializer.h"
 
-TEST(DatabaseTest, SingletonInstance) {
-    Database& db1 = Database::getInstance();
-    Database& db2 = Database::getInstance();
+class ProductTest : public ::testing::Test {
+protected:
+    void SetUp() override {
+        DatabaseInitializer::initializeDatabase();
+    }
     
-    // Both references should point to the same instance
-    EXPECT_EQ(&db1, &db2);
+    ProductController controller;
+};
+
+TEST_F(ProductTest, AddProduct) {
+    bool result = controller.addProduct("Test Product", "Test Description", 99.99, 10);
+    EXPECT_TRUE(result);
+    
+    auto products = controller.getProducts();
+    EXPECT_FALSE(products.empty());
 }
 
-TEST(DatabaseTest, ExecuteQuery) {
-    Database& db = Database::getInstance();
-    
-    // Test creating a table
-    EXPECT_NO_THROW({
-        db.executeQuery(
-            "CREATE TABLE IF NOT EXISTS test_table ("
-            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-            "name TEXT NOT NULL)"
-        );
-    });
-    
-    // Test inserting data
-    EXPECT_NO_THROW({
-        db.executeQuery(
-            "INSERT INTO test_table (name) VALUES ('test')"
-        );
-    });
+TEST_F(ProductTest, GetProducts) {
+    auto products = controller.getProducts();
+    EXPECT_NO_THROW(products);
 }
+
+TEST_F(ProductTest, DeleteProduct) {
+    // First add a product
+    controller.addProduct("Delete Test", "Test Description", 99.99, 10);
+    auto products = controller.getProducts();
+    ASSERT_FALSE(products.empty());
+    
+    // Then delete it
+    bool result = controller.deleteProduct(products[0].getId());
+    EXPECT_TRUE(result);
+}
+
+// Add more tests as needed
