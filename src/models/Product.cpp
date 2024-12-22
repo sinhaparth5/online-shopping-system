@@ -1,3 +1,4 @@
+// src/models/Product.cpp
 #include "Product.h"
 
 Product::Product(int id, std::string name, std::string description, double price, int stockQuantity)
@@ -5,7 +6,9 @@ Product::Product(int id, std::string name, std::string description, double price
       name(std::move(name)), 
       description(std::move(description)), 
       price(price), 
-      stockQuantity(stockQuantity) {}
+      stockQuantity(stockQuantity) {
+    // Constructor implementation for the linker
+}
 
 void Product::setPrice(double newPrice) {
     if (newPrice >= 0) {

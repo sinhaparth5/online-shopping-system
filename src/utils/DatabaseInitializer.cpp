@@ -5,7 +5,7 @@
 void DatabaseInitializer::initializeDatabase() {
     try {
         // Read and execute schema.sql
-        auto sqlStatements = readSQLFile("sql/schema.sql");
+        auto sqlStatements = readSQLFile("./sql/schema.sql");
         
         for (const auto& sql : sqlStatements) {
             if (!sql.empty()) {
