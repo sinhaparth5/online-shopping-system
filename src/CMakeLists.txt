@@ -8,7 +8,8 @@ set(CONTROLLER_SOURCES
 set(MODEL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/models/User.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/models/UserDAO.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/models/ProductDAO.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/models/ProductDAO.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/models/Product.cpp)
 
 set(UTILS_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/DatabaseInitializer.cpp)
@@ -19,7 +20,7 @@ set(SOURCES
     ${CONTROLLER_SOURCES}
     ${MODEL_SOURCES}
     ${UTILS_SOURCES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/App.cpp)
 
 # Create library target
 add_library(shop_lib STATIC ${SOURCES})
@@ -34,6 +35,7 @@ target_link_libraries(shop_lib
     PkgConfig::SQLite3
     OpenSSL::SSL
     OpenSSL::Crypto
+    stdc++fs
 )
 
 # Create executable target
